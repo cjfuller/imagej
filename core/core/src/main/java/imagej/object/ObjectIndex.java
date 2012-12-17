@@ -125,7 +125,9 @@ public class ObjectIndex<E> implements Collection<E> {
 	 *         list if no such objects exist (this method never returns null).
 	 */
 	public List<E> get(final Class<?> type) {
-		final List<E> list = retrieveList(type);
+		List<E> list = retrieveList(type);
+		// to ensure thread safety elsewhere make a copy of the data
+		if (list != null) list = new ArrayList<E>(list);
 		return Collections.unmodifiableList(list);
 	}
 
