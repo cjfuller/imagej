@@ -49,16 +49,27 @@ public interface ObjectService extends Service {
 
 	EventService getEventService();
 
-	/** Gets the index of available objects. */
+	/**
+	 * Gets the index of available objects. This method allows direct access to
+	 * the underlying {@link ObjectIndex}. Direct manipulation of the index can
+	 * lead to threading issues.
+	 */
 	ObjectIndex<Object> getIndex();
 
-	/** Gets a list of all registered objects compatible with the given type. */
+	/**
+	 * Gets a {@link List} of all registered objects compatible with the given
+	 * type. Note that the returned {@link List} is a snapshot copy of the data in
+	 * the underlying {@link ObjectIndex}. This is done for thread safety. If you
+	 * desire to maximize performance and are willing to manage threading issues
+	 * then you may call getIndex() and manipulate the {@link ObjectIndex}
+	 * directly.
+	 */
 	<T> List<T> getObjects(Class<T> type);
 
-	/** Registers an object with the object service. */
+	/** Registers an object with the object service in a thread safe fashion. */
 	void addObject(Object obj);
 
-	/** Deregisters an object with the object service. */
+	/** Deregisters an object with the object service in a thread safe fashion. */
 	void removeObject(Object obj);
 
 }

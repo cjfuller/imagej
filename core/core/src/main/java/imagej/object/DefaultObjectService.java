@@ -84,7 +84,7 @@ public final class DefaultObjectService extends AbstractService implements
 	}
 
 	@Override
-	public <T> List<T> getObjects(final Class<T> type) {
+	public synchronized <T> List<T> getObjects(final Class<T> type) {
 		final List<Object> list = objectIndex.get(type);
 		@SuppressWarnings("unchecked")
 		final List<T> result = (List<T>) list;
@@ -92,13 +92,13 @@ public final class DefaultObjectService extends AbstractService implements
 	}
 
 	@Override
-	public void addObject(final Object obj) {
+	public synchronized void addObject(final Object obj) {
 		objectIndex.add(obj);
 		eventService.publish(new ObjectsAddedEvent(obj));
 	}
 
 	@Override
-	public void removeObject(final Object obj) {
+	public synchronized void removeObject(final Object obj) {
 		objectIndex.remove(obj);
 		eventService.publish(new ObjectsRemovedEvent(obj));
 	}
